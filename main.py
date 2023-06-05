@@ -4,7 +4,7 @@ import numpy as np
 from typing import Optional, Tuple, Union
 from PIL import Image, ImageTk
 from datetime import datetime
-from Frames import TrainFrame as TRF, TestFrame as TF
+from Frames import TrainFrame as TRF, MainFrame as MF
 
 EMOTIONS = [
   'Felicidad', 'Tristeza',
@@ -29,7 +29,7 @@ class App(ctk.CTk):
         self.switchMode = ctk.CTkSwitch(self, text="Modo entrenamiento", variable=self.switchVar, command=self.toggleMode, onvalue="on", offvalue="off")
         self.switchMode.pack()
         
-        self.modeFrame = TF.TestFrame(master=self, width=500, height=500)
+        self.modeFrame = MF.MainFrame(master=self, width=500, height=500)
         self.video = cv2.VideoCapture(0)
         self.detectionColor = (np.random.randint(50, 256), np.random.randint(50, 256), np.random.randint(50, 256))
         
@@ -46,7 +46,7 @@ class App(ctk.CTk):
         self.mainloop()
     
     def setDefValues(self):
-        self.framesData = []
+        self.dataFrames = []
         self.framesCount = 0
         self.isCapturing = False
         self.isFace = False
@@ -54,7 +54,7 @@ class App(ctk.CTk):
     def toggleMode(self):
       if self.switchVar.get() == "on":
         self.modeFrame = TRF.TrainFrame(master=self, width=500, height=500)
-      else: self.modeFrame = TF.TestFrame(master=self, width=500, height=500)
+      else: self.modeFrame = MF.MainFrame(master=self, width=500, height=500)
     
     def detectFace(self, frame):
       face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -79,6 +79,7 @@ class App(ctk.CTk):
         
       for i, testFrame in enumerate(testFrames):
         cv2.imwrite(f"./Data/Test/{i + 1}@{emotionTag} {datetime.now().strftime('%d-%m-%Y %H_%M_%S')}.jpg", testFrame)
+        
       #print(f"trainframes: {trainFrames} testframes: {testFrames}")
       self.setDefValues()
     

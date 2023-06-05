@@ -8,16 +8,16 @@ EMOTIONS_DICT = {
   'Felicidad': 0, 'Tristeza': 1,
   'Ira': 2,       'Sorpresa': 3,
   'Miedo': 4,     'Disgusto': 5,
-  'Vergüenza': 6, 'Desprecio': 7,
-  'Diversión': 8, 'Preocupación': 9
+  'Verguenza': 6, 'Desprecio': 7,
+  'Diversion': 8, 'Preocupacion': 9
 }
 
 EMOTIONS = [
   'Felicidad', 'Tristeza',
   'Ira',       'Sorpresa',
   'Miedo',     'Disgusto',
-  'Vergüenza', 'Desprecio',
-  'Diversión', 'Preocupación'
+  'Verguenza', 'Desprecio',
+  'Diversion', 'Preocupacion'
 ]
 
 class TrainFrame(ctk.CTkFrame):
