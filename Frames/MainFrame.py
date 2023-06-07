@@ -2,14 +2,13 @@ import os
 import cv2
 import customtkinter as ctk
 import numpy as np
+import sqlite3
 from IA import MATest
 
 EMOTIONS = [
   'Felicidad', 'Tristeza',
-  'Ira',       'Sorpresa',
-  'Miedo',     'Disgusto',
-  'Vergüenza', 'Desprecio',
-  'Diversión', 'Preocupación'
+  'Ira',       'Miedo',
+  'Disgusto'
 ]
 
 class MainFrame(ctk.CTkFrame):
@@ -25,6 +24,7 @@ class MainFrame(ctk.CTkFrame):
       
       self.txbNombre = ctk.CTkEntry(self, placeholder_text="Nombre de usuario", width=175, height=20, corner_radius=5)
       self.txbNombre.place(relx=0.13, rely=0.15)
+      
       
       self.txbEdad = ctk.CTkEntry(self, placeholder_text="Edad", width=175, height=20, corner_radius=5)
       self.txbEdad.place(relx=0.53, rely=0.15)
@@ -45,12 +45,49 @@ class MainFrame(ctk.CTkFrame):
       self.lblEmocion = ctk.CTkLabel(self, text="Emoción detectada: ")
       self.lblEmocion.place(relx=0.25, rely=0.55)
       
-      self.saveData = ctk.CTkButton(self, text="Guardar info", width=175, height=40)
+      self.saveData = ctk.CTkButton(self, text="Guardar info", command=self.saveDataToDB, width=175, height=40)
       self.saveData.place(relx=0.13, rely=0.65)
       
-      self.detectEmotion = ctk.CTkButton(self, text="Detectar emoción", width=175, height=40)
-      self.detectEmotion.place(relx=0.53, rely=0.65)
+      self.btnDetectEmotion = ctk.CTkButton(self, text="Detectar emoción", command=self.detectEmotion, width=175, height=40)
+      self.btnDetectEmotion.place(relx=0.53, rely=0.65)
+  
+  def saveDataToDB(self):
+    print(f"lblEmocionText: {self.lblEmocion._text}")
+    
+    if self.lblEmocion._text == 'Emoción detectada: ': return
+    
+    conn = sqlite3.connect('MA_DB.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios
+                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  nombre TEXT,
+                  edad INTEGER,
+                  telefono TEXT,
+                  email TEXT,
+                  sexo TEXT,
+                  emocion TEXT
+                  )''')
+    conn.commit()
+    conn.execute("INSERT INTO usuarios (nombre, edad, telefono, email, sexo, emocion) VALUES (?, ?, ?, ?, ?, ?)", (self.txbNombre.get(), self.txbEdad.get(), self.txbTelefono.get(), self.txbEmail.get(), self.sexCombo.get(), self.lblEmocion._text.split(': ')[1]))
+    conn.commit()
+    
+    conn.close()
+    
+    self.lblEmocion.configure(text="Emoción detectada: ")
+
+  def detectEmotion(self):
+    frame = self.master.captureFrames()
+    
+    if frame is not None:
       
+      frame = np.array(cv2.resize(frame, (128, 128)), dtype=np.float32)
+      frame = frame[np.newaxis, ...]
+      print(f"FrameShape: {frame.shape}")
+      maTest = MATest.TestMA()
+      emotionIndex = maTest.testFrame(frame)
+      self.lblEmocion.configure(text=f"Emoción detectada: {EMOTIONS[emotionIndex]}")
+      
+  
   def btnTestClick(self):
 
       MAModel = MATest.TestMA()

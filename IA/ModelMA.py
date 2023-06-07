@@ -18,7 +18,7 @@ class Model(tf.keras.Model):
       tf.keras.layers.Flatten(),
       tf.keras.layers.Dense(256, activation='relu'),
       tf.keras.layers.Dense(128, activation='relu'),
-      tf.keras.layers.Dense(10, activation='softmax')
+      tf.keras.layers.Dense(5, activation='softmax')
     ]
 
     self.lossf = tf.keras.losses.SparseCategoricalCrossentropy()

@@ -6,18 +6,14 @@ from IA import MATrain
 
 EMOTIONS_DICT = {
   'Felicidad': 0, 'Tristeza': 1,
-  'Ira': 2,       'Sorpresa': 3,
-  'Miedo': 4,     'Disgusto': 5,
-  'Verguenza': 6, 'Desprecio': 7,
-  'Diversion': 8, 'Preocupacion': 9
+  'Ira': 2,       'Miedo': 3,
+  'Disgusto': 4
 }
 
 EMOTIONS = [
   'Felicidad', 'Tristeza',
-  'Ira',       'Sorpresa',
-  'Miedo',     'Disgusto',
-  'Verguenza', 'Desprecio',
-  'Diversion', 'Preocupacion'
+  'Ira',       'Miedo',
+  'Disgusto'
 ]
 
 class TrainFrame(ctk.CTkFrame):

@@ -8,10 +8,8 @@ from Frames import TrainFrame as TRF, MainFrame as MF
 
 EMOTIONS = [
   'Felicidad', 'Tristeza',
-  'Ira',       'Sorpresa',
-  'Miedo',     'Disgusto',
-  'Vergüenza', 'Desprecio',
-  'Diversión', 'Preocupación'
+  'Ira',       'Miedo',
+  'Disgusto'
 ]
 
 class App(ctk.CTk):
