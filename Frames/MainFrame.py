@@ -52,7 +52,6 @@ class MainFrame(ctk.CTkFrame):
       self.btnDetectEmotion.place(relx=0.53, rely=0.65)
   
   def saveDataToDB(self):
-    print(f"lblEmocionText: {self.lblEmocion._text}")
     
     if self.lblEmocion._text == 'Emoción detectada: ': return
     
@@ -82,7 +81,7 @@ class MainFrame(ctk.CTkFrame):
       
       frame = np.array(cv2.resize(frame, (128, 128)), dtype=np.float32)
       frame = frame[np.newaxis, ...]
-      print(f"FrameShape: {frame.shape}")
+      
       maTest = MATest.TestMA()
       emotionIndex = maTest.testFrame(frame)
       self.lblEmocion.configure(text=f"Emoción detectada: {EMOTIONS[emotionIndex]}")
